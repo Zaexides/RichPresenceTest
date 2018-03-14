@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.applicationBox = new System.Windows.Forms.GroupBox();
             this.newAppGroup = new System.Windows.Forms.GroupBox();
             this.addAppButton = new System.Windows.Forms.Button();
@@ -668,9 +669,10 @@
             this.Controls.Add(this.iconBox);
             this.Controls.Add(this.applicationBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "Rich Presence Tester";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.applicationBox.ResumeLayout(false);
