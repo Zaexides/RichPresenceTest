@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.applicationBox = new System.Windows.Forms.GroupBox();
             this.newAppGroup = new System.Windows.Forms.GroupBox();
@@ -71,14 +72,25 @@
             this.partySizeLabel = new System.Windows.Forms.Label();
             this.partyCheckBox = new System.Windows.Forms.CheckBox();
             this.timeBox = new System.Windows.Forms.GroupBox();
-            this.endTimeCheckBox = new System.Windows.Forms.CheckBox();
-            this.currentDateTimeEndButton = new System.Windows.Forms.Button();
-            this.dateTimeEndPicker = new System.Windows.Forms.DateTimePicker();
-            this.startTimeCheckBox = new System.Windows.Forms.CheckBox();
+            this.timeCheckBox = new System.Windows.Forms.CheckBox();
+            this.endTimeRadioButton = new System.Windows.Forms.RadioButton();
+            this.startTimeRadioButton = new System.Windows.Forms.RadioButton();
             this.currentDateTimeButton = new System.Windows.Forms.Button();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.updateButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updatePresenceOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetTimestampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applicationBox.SuspendLayout();
             this.newAppGroup.SuspendLayout();
             this.curAppGroup.SuspendLayout();
@@ -89,6 +101,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.partyMaxNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.partySizeNumeric)).BeginInit();
             this.timeBox.SuspendLayout();
+            this.contextMenu.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // applicationBox
@@ -97,7 +111,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.applicationBox.Controls.Add(this.newAppGroup);
             this.applicationBox.Controls.Add(this.curAppGroup);
-            this.applicationBox.Location = new System.Drawing.Point(13, 13);
+            this.applicationBox.Location = new System.Drawing.Point(13, 28);
             this.applicationBox.Name = "applicationBox";
             this.applicationBox.Size = new System.Drawing.Size(431, 141);
             this.applicationBox.TabIndex = 0;
@@ -240,7 +254,7 @@
             this.iconBox.Controls.Add(this.largeIconLabel);
             this.iconBox.Controls.Add(this.addIconBox);
             this.iconBox.Enabled = false;
-            this.iconBox.Location = new System.Drawing.Point(13, 155);
+            this.iconBox.Location = new System.Drawing.Point(13, 170);
             this.iconBox.Name = "iconBox";
             this.iconBox.Size = new System.Drawing.Size(431, 140);
             this.iconBox.TabIndex = 1;
@@ -384,7 +398,7 @@
             this.textGroupBox.Controls.Add(this.detailsTextBox);
             this.textGroupBox.Controls.Add(this.detailsLabel);
             this.textGroupBox.Enabled = false;
-            this.textGroupBox.Location = new System.Drawing.Point(13, 302);
+            this.textGroupBox.Location = new System.Drawing.Point(13, 317);
             this.textGroupBox.Name = "textGroupBox";
             this.textGroupBox.Size = new System.Drawing.Size(431, 121);
             this.textGroupBox.TabIndex = 2;
@@ -473,7 +487,7 @@
             this.partyBox.Controls.Add(this.partySizeLabel);
             this.partyBox.Controls.Add(this.partyCheckBox);
             this.partyBox.Enabled = false;
-            this.partyBox.Location = new System.Drawing.Point(13, 430);
+            this.partyBox.Location = new System.Drawing.Point(13, 445);
             this.partyBox.Name = "partyBox";
             this.partyBox.Size = new System.Drawing.Size(98, 94);
             this.partyBox.TabIndex = 3;
@@ -532,6 +546,7 @@
             0,
             0,
             0});
+            this.partySizeNumeric.ValueChanged += new System.EventHandler(this.partySizeNumeric_ValueChanged);
             // 
             // partySizeLabel
             // 
@@ -555,70 +570,57 @@
             // 
             // timeBox
             // 
-            this.timeBox.Controls.Add(this.endTimeCheckBox);
-            this.timeBox.Controls.Add(this.currentDateTimeEndButton);
-            this.timeBox.Controls.Add(this.dateTimeEndPicker);
-            this.timeBox.Controls.Add(this.startTimeCheckBox);
+            this.timeBox.Controls.Add(this.timeCheckBox);
+            this.timeBox.Controls.Add(this.endTimeRadioButton);
+            this.timeBox.Controls.Add(this.startTimeRadioButton);
             this.timeBox.Controls.Add(this.currentDateTimeButton);
             this.timeBox.Controls.Add(this.dateTimePicker);
-            this.timeBox.Location = new System.Drawing.Point(118, 431);
+            this.timeBox.Enabled = false;
+            this.timeBox.Location = new System.Drawing.Point(118, 446);
             this.timeBox.Name = "timeBox";
             this.timeBox.Size = new System.Drawing.Size(326, 93);
             this.timeBox.TabIndex = 4;
             this.timeBox.TabStop = false;
-            this.timeBox.Text = "Time";
             // 
-            // endTimeCheckBox
+            // timeCheckBox
             // 
-            this.endTimeCheckBox.AutoSize = true;
-            this.endTimeCheckBox.Location = new System.Drawing.Point(165, 20);
-            this.endTimeCheckBox.Name = "endTimeCheckBox";
-            this.endTimeCheckBox.Size = new System.Drawing.Size(71, 17);
-            this.endTimeCheckBox.TabIndex = 6;
-            this.endTimeCheckBox.Text = "End Time";
-            this.endTimeCheckBox.UseVisualStyleBackColor = true;
-            this.endTimeCheckBox.CheckedChanged += new System.EventHandler(this.endTimeCheckBox_CheckedChanged);
+            this.timeCheckBox.AutoSize = true;
+            this.timeCheckBox.Location = new System.Drawing.Point(6, 0);
+            this.timeCheckBox.Name = "timeCheckBox";
+            this.timeCheckBox.Size = new System.Drawing.Size(49, 17);
+            this.timeCheckBox.TabIndex = 5;
+            this.timeCheckBox.Text = "Time";
+            this.timeCheckBox.UseVisualStyleBackColor = true;
+            this.timeCheckBox.CheckedChanged += new System.EventHandler(this.timeCheckBox_CheckedChanged);
             // 
-            // currentDateTimeEndButton
+            // endTimeRadioButton
             // 
-            this.currentDateTimeEndButton.Enabled = false;
-            this.currentDateTimeEndButton.Location = new System.Drawing.Point(165, 62);
-            this.currentDateTimeEndButton.Name = "currentDateTimeEndButton";
-            this.currentDateTimeEndButton.Size = new System.Drawing.Size(153, 25);
-            this.currentDateTimeEndButton.TabIndex = 5;
-            this.currentDateTimeEndButton.Text = "Reset";
-            this.currentDateTimeEndButton.UseVisualStyleBackColor = true;
-            this.currentDateTimeEndButton.Click += new System.EventHandler(this.currentDateTimeEndButton_Click);
+            this.endTimeRadioButton.AutoSize = true;
+            this.endTimeRadioButton.Location = new System.Drawing.Point(250, 16);
+            this.endTimeRadioButton.Name = "endTimeRadioButton";
+            this.endTimeRadioButton.Size = new System.Drawing.Size(70, 17);
+            this.endTimeRadioButton.TabIndex = 4;
+            this.endTimeRadioButton.Text = "End Time";
+            this.endTimeRadioButton.UseVisualStyleBackColor = true;
+            this.endTimeRadioButton.CheckedChanged += new System.EventHandler(this.endTimeRadioButton_CheckedChanged);
             // 
-            // dateTimeEndPicker
+            // startTimeRadioButton
             // 
-            this.dateTimeEndPicker.Checked = false;
-            this.dateTimeEndPicker.CustomFormat = "MMM dd yyyy HH:mm:ss";
-            this.dateTimeEndPicker.Enabled = false;
-            this.dateTimeEndPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimeEndPicker.Location = new System.Drawing.Point(165, 39);
-            this.dateTimeEndPicker.MinDate = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-            this.dateTimeEndPicker.Name = "dateTimeEndPicker";
-            this.dateTimeEndPicker.Size = new System.Drawing.Size(155, 20);
-            this.dateTimeEndPicker.TabIndex = 4;
-            // 
-            // startTimeCheckBox
-            // 
-            this.startTimeCheckBox.AutoSize = true;
-            this.startTimeCheckBox.Location = new System.Drawing.Point(6, 20);
-            this.startTimeCheckBox.Name = "startTimeCheckBox";
-            this.startTimeCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.startTimeCheckBox.TabIndex = 3;
-            this.startTimeCheckBox.Text = "Start Time";
-            this.startTimeCheckBox.UseVisualStyleBackColor = true;
-            this.startTimeCheckBox.CheckedChanged += new System.EventHandler(this.startTimeCheckBox_CheckedChanged);
+            this.startTimeRadioButton.AutoSize = true;
+            this.startTimeRadioButton.Checked = true;
+            this.startTimeRadioButton.Location = new System.Drawing.Point(174, 16);
+            this.startTimeRadioButton.Name = "startTimeRadioButton";
+            this.startTimeRadioButton.Size = new System.Drawing.Size(73, 17);
+            this.startTimeRadioButton.TabIndex = 3;
+            this.startTimeRadioButton.TabStop = true;
+            this.startTimeRadioButton.Text = "Start Time";
+            this.startTimeRadioButton.UseVisualStyleBackColor = true;
             // 
             // currentDateTimeButton
             // 
-            this.currentDateTimeButton.Enabled = false;
             this.currentDateTimeButton.Location = new System.Drawing.Point(6, 62);
             this.currentDateTimeButton.Name = "currentDateTimeButton";
-            this.currentDateTimeButton.Size = new System.Drawing.Size(153, 25);
+            this.currentDateTimeButton.Size = new System.Drawing.Size(314, 25);
             this.currentDateTimeButton.TabIndex = 2;
             this.currentDateTimeButton.Text = "Reset";
             this.currentDateTimeButton.UseVisualStyleBackColor = true;
@@ -627,18 +629,17 @@
             // dateTimePicker
             // 
             this.dateTimePicker.Checked = false;
-            this.dateTimePicker.CustomFormat = "MMM dd yyyy HH:mm:ss";
-            this.dateTimePicker.Enabled = false;
+            this.dateTimePicker.CustomFormat = "MMMM dd yyyy HH:mm:ss";
             this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker.Location = new System.Drawing.Point(6, 39);
             this.dateTimePicker.MinDate = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
             this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.Size = new System.Drawing.Size(153, 20);
+            this.dateTimePicker.Size = new System.Drawing.Size(314, 20);
             this.dateTimePicker.TabIndex = 1;
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(13, 530);
+            this.updateButton.Location = new System.Drawing.Point(13, 545);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(212, 23);
             this.updateButton.TabIndex = 5;
@@ -648,7 +649,7 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(231, 530);
+            this.stopButton.Location = new System.Drawing.Point(231, 545);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(213, 23);
             this.stopButton.TabIndex = 6;
@@ -656,11 +657,111 @@
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.ContextMenuStrip = this.contextMenu;
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "Rich Presence Tester";
+            this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            // 
+            // contextMenu
+            // 
+            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.updateToolStripMenuItem,
+            this.resetTimestampToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.contextMenu.Name = "contextMenu";
+            this.contextMenu.Size = new System.Drawing.Size(166, 114);
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(456, 24);
+            this.menuStrip1.TabIndex = 7;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updatePresenceOnStartupToolStripMenuItem,
+            this.exitToolStripMenuItem1});
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.testToolStripMenuItem.Text = "File";
+            // 
+            // updatePresenceOnStartupToolStripMenuItem
+            // 
+            this.updatePresenceOnStartupToolStripMenuItem.CheckOnClick = true;
+            this.updatePresenceOnStartupToolStripMenuItem.Enabled = false;
+            this.updatePresenceOnStartupToolStripMenuItem.Name = "updatePresenceOnStartupToolStripMenuItem";
+            this.updatePresenceOnStartupToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.updatePresenceOnStartupToolStripMenuItem.Text = "Update Presence on startup";
+            this.updatePresenceOnStartupToolStripMenuItem.Click += new System.EventHandler(this.updatePresenceOnStartupToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(219, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updatesToolStripMenuItem});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // updatesToolStripMenuItem
+            // 
+            this.updatesToolStripMenuItem.Name = "updatesToolStripMenuItem";
+            this.updatesToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.updatesToolStripMenuItem.Text = "Updates";
+            this.updatesToolStripMenuItem.Click += new System.EventHandler(this.updatesToolStripMenuItem_Click);
+            // 
+            // updateToolStripMenuItem
+            // 
+            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.updateToolStripMenuItem.Text = "Update";
+            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            // 
+            // resetTimestampToolStripMenuItem
+            // 
+            this.resetTimestampToolStripMenuItem.Name = "resetTimestampToolStripMenuItem";
+            this.resetTimestampToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.resetTimestampToolStripMenuItem.Text = "Reset Timestamp";
+            this.resetTimestampToolStripMenuItem.Click += new System.EventHandler(this.resetTimestampToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 565);
+            this.ClientSize = new System.Drawing.Size(456, 580);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.timeBox);
@@ -670,11 +771,14 @@
             this.Controls.Add(this.applicationBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Rich Presence Tester";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.applicationBox.ResumeLayout(false);
             this.newAppGroup.ResumeLayout(false);
             this.newAppGroup.PerformLayout();
@@ -692,7 +796,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.partySizeNumeric)).EndInit();
             this.timeBox.ResumeLayout(false);
             this.timeBox.PerformLayout();
+            this.contextMenu.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -744,9 +852,20 @@
         private System.Windows.Forms.Button currentDateTimeButton;
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button stopButton;
-        private System.Windows.Forms.DateTimePicker dateTimeEndPicker;
-        private System.Windows.Forms.CheckBox startTimeCheckBox;
-        private System.Windows.Forms.CheckBox endTimeCheckBox;
-        private System.Windows.Forms.Button currentDateTimeEndButton;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.CheckBox timeCheckBox;
+        private System.Windows.Forms.RadioButton endTimeRadioButton;
+        private System.Windows.Forms.RadioButton startTimeRadioButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updatePresenceOnStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetTimestampToolStripMenuItem;
     }
 }

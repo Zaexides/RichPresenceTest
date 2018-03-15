@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RichPresenceTest
@@ -19,24 +15,39 @@ namespace RichPresenceTest
         {
             get
             {
-                if (Settings.ApplicationCount == 0)
+                if (Settings.Main.ApplicationCount == 0)
                     return null;
                 else
-                    return Settings.GetApplication(appBox.SelectedIndex);
+                    return Settings.Main.GetApplication(appBox.SelectedIndex);
             }
         }
 
         public MainForm()
         {
+            UpdateChecker.CheckForUpdates();
             InitializeComponent();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             UnGroupCheckBox(partyCheckBox, partyBox);
+            UnGroupCheckBox(timeCheckBox, timeBox);
             Settings.Load();
+            int lastSelectedApplication = Settings.Main.LastSelectedApplication;
             SetupApplicationList();
+            if(lastSelectedApplication != -1 && lastSelectedApplication < appBox.Items.Count)
+                appBox.SelectedIndex = lastSelectedApplication;
+            updatePresenceOnStartupToolStripMenuItem.Checked = Settings.Main.UpdateOnStartup;
             handlers = new DiscordRpc.EventHandlers();
+
+            if (Settings.Main.UpdateOnStartup)
+                updateButton_Click(this, new EventArgs());
+
+            if (!UpdateChecker.IsUpToDate)
+            {
+                Font f = new Font(updatesToolStripMenuItem.Font, FontStyle.Bold);
+                updatesToolStripMenuItem.Font = f;
+            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -57,7 +68,7 @@ namespace RichPresenceTest
             addAppButton.Enabled = ShouldButtonBeActive();
             if(addAppButton.Enabled)
             {
-                if (Settings.ContainsApplicationWithID(appIdTextBox.Text))
+                if (Settings.Main.ContainsApplicationWithID(appIdTextBox.Text))
                     addAppButton.Text = "Rename";
                 else
                     addAppButton.Text = "Add";
@@ -70,7 +81,7 @@ namespace RichPresenceTest
             {
                 if (appNameTextBox.Text != string.Empty)
                 {
-                    if (!Settings.ContainsApplicationWithName(appNameTextBox.Text))
+                    if (!Settings.Main.ContainsApplicationWithName(appNameTextBox.Text))
                         return true;
                 }
             }
@@ -80,7 +91,7 @@ namespace RichPresenceTest
         private void SetupApplicationList()
         {
             appBox.Items.Clear();
-            appBox.Items.AddRange(Settings.GetApplicationArray());
+            appBox.Items.AddRange(Settings.Main.GetApplicationArray());
             if (appBox.Items.Count > 0)
                 appBox.SelectedIndex = 0;
             else
@@ -100,11 +111,22 @@ namespace RichPresenceTest
             iconBox.Enabled = appBox.SelectedIndex != -1;
             textGroupBox.Enabled = appBox.SelectedIndex != -1;
             updateButton.Enabled = appBox.SelectedIndex != -1;
+            timeCheckBox.Enabled = appBox.SelectedIndex != -1;
+            partyCheckBox.Enabled = appBox.SelectedIndex != -1;
+            updatePresenceOnStartupToolStripMenuItem.Enabled = appBox.SelectedIndex != -1;
+
+            if (appBox.SelectedIndex == -1)
+            {
+                timeCheckBox.Checked = false;
+                partyCheckBox.Checked = false;
+            }
+
+            Settings.Main.LastSelectedApplication = appBox.SelectedIndex;
 
             if (appBox.SelectedIndex == -1)
                 currentAppIdLabel.Text = "N/A";
             else
-                currentAppIdLabel.Text = Settings.GetApplication(appBox.SelectedIndex).appId;
+                currentAppIdLabel.Text = Settings.Main.GetApplication(appBox.SelectedIndex).appId;
 
             int smallIconIndex = 0;
             int largeIconIndex = 0;
@@ -122,14 +144,19 @@ namespace RichPresenceTest
             largeIconBox.SelectedIndex = largeIconIndex;
             stateTextBox.Text = CurrentApplication.StateText;
             detailsTextBox.Text = CurrentApplication.DetailsText;
+            timeCheckBox.Checked = CurrentApplication.UseTime;
+            endTimeRadioButton.Checked = CurrentApplication.UseEndTime;
+            partyCheckBox.Checked = CurrentApplication.UseParty;
+            partySizeNumeric.Value = CurrentApplication.PartySize;
+            partyMaxNumeric.Value = CurrentApplication.PartyMax;
         }
 
         private void addAppButton_Click(object sender, EventArgs e)
         {
-            if (Settings.ContainsApplicationWithID(appIdTextBox.Text))
-                Settings.RenameApplication(appIdTextBox.Text, appNameTextBox.Text);
+            if (Settings.Main.ContainsApplicationWithID(appIdTextBox.Text))
+                Settings.Main.RenameApplication(appIdTextBox.Text, appNameTextBox.Text);
             else
-                Settings.AddApplication(new Settings.Application(appNameTextBox.Text, appIdTextBox.Text));
+                Settings.Main.AddApplication(new Settings.Application(appNameTextBox.Text, appIdTextBox.Text));
             appNameTextBox.Text = string.Empty;
             appIdTextBox.Text = string.Empty;
             ValidateIfAddAppButtonShouldBeActivated();
@@ -139,7 +166,7 @@ namespace RichPresenceTest
 
         private void removeAppButton_Click(object sender, EventArgs e)
         {
-            Settings.RemoveApplication(appBox.SelectedIndex);
+            Settings.Main.RemoveApplication(appBox.SelectedIndex);
             SetupApplicationList();
         }
 
@@ -209,7 +236,12 @@ namespace RichPresenceTest
         private void stateTextBox_TextChanged(object sender, EventArgs e) => CurrentApplication.StateText = stateTextBox.Text;
         private void largeIconTextBox_TextChanged(object sender, EventArgs e) => CurrentApplication.SetLargeIconText(largeIconBox.SelectedIndex, largeIconTextBox.Text);
         private void smallIconTextBox_TextChanged(object sender, EventArgs e) => CurrentApplication.SetSmallIconText(smallIconBox.SelectedIndex, smallIconTextBox.Text);
-        private void partyCheckBox_CheckedChanged(object sender, EventArgs e) => partyBox.Enabled = partyCheckBox.Checked;
+
+        private void partyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            partyBox.Enabled = partyCheckBox.Checked;
+            CurrentApplication.UseParty = partyCheckBox.Checked;
+        }
 
         private void UnGroupCheckBox(CheckBox checkBox, GroupBox groupBox)
         {
@@ -225,10 +257,20 @@ namespace RichPresenceTest
         private void partyMaxNumeric_ValueChanged(object sender, EventArgs e)
         {
             partySizeNumeric.Maximum = partyMaxNumeric.Value;
+            SetPartySizeSettings();
+        }
+
+        private void partySizeNumeric_ValueChanged(object sender, EventArgs e) => SetPartySizeSettings();
+
+        private void SetPartySizeSettings()
+        {
+            CurrentApplication.SetParty(
+                (int)partySizeNumeric.Value,
+                (int)partyMaxNumeric.Value
+                );
         }
 
         private void currentDateTimeButton_Click(object sender, EventArgs e) => dateTimePicker.Value = DateTime.Now;
-        private void currentDateTimeEndButton_Click(object sender, EventArgs e) => dateTimeEndPicker.Value = DateTime.Now;
 
         private void stopButton_Click(object sender, EventArgs e) => DiscordRpc.Shutdown();
 
@@ -258,24 +300,83 @@ namespace RichPresenceTest
                 richPresence.partyMax = (int)partyMaxNumeric.Value;
             }
 
-            if(startTimeCheckBox.Checked)
-                richPresence.startTimestamp = (long)dateTimePicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
-            if (endTimeCheckBox.Checked)
-                richPresence.endTimestamp = (long)dateTimeEndPicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
+            if (timeCheckBox.Checked)
+            {
+                if (startTimeRadioButton.Checked)
+                    richPresence.startTimestamp = (long)dateTimePicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
+                else if (endTimeRadioButton.Checked)
+                    richPresence.endTimestamp = (long)dateTimePicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
+            }
 
             DiscordRpc.UpdatePresence(richPresence);
         }
 
-        private void startTimeCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void MainForm_Resize(object sender, EventArgs e)
         {
-            dateTimePicker.Enabled = startTimeCheckBox.Checked;
-            currentDateTimeButton.Enabled = startTimeCheckBox.Checked;
+            if(WindowState == FormWindowState.Minimized)
+            {
+                notifyIcon.Visible = true;
+                Hide();
+            }
+            else if (WindowState == FormWindowState.Normal)
+            {
+                notifyIcon.Visible = false;
+                Show();
+            }
         }
 
-        private void endTimeCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dateTimeEndPicker.Enabled = endTimeCheckBox.Checked;
-            currentDateTimeEndButton.Enabled = endTimeCheckBox.Checked;
+            Show();
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e) => showToolStripMenuItem_Click(sender, e);
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void timeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            timeBox.Enabled = timeCheckBox.Checked;
+            resetTimestampToolStripMenuItem.Enabled = timeCheckBox.Checked;
+            if(CurrentApplication != null)
+                CurrentApplication.UseTime = timeCheckBox.Checked;
+        }
+
+        private void endTimeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CurrentApplication != null)
+                CurrentApplication.UseEndTime = endTimeRadioButton.Checked;
+        }
+
+        private void updatePresenceOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.Main.UpdateOnStartup = updatePresenceOnStartupToolStripMenuItem.Checked;
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => Close();
+
+        private void updatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm aboutForm = new AboutForm();
+            aboutForm.ShowDialog();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            if(!UpdateChecker.IsUpToDate)
+                updatesToolStripMenuItem_Click(sender, e);
+        }
+
+        private void updateToolStripMenuItem_Click(object sender, EventArgs e) => updateButton_Click(sender, e);
+
+        private void resetTimestampToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentDateTimeButton_Click(sender, e);
+            updateButton_Click(sender, e);
         }
     }
 }

@@ -5,6 +5,12 @@ using System.Text;
 
 public class DiscordRpc
 {
+#if (x64)
+    private const string DLL_NAME = "discord-rpc x64";
+#elif (x86)
+    private const string DLL_NAME = "discord-rpc x32";
+#endif
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ReadyCallback();
 
@@ -69,22 +75,22 @@ public class DiscordRpc
         Ignore = 2
     }
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_Initialize", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_Initialize", CallingConvention = CallingConvention.Cdecl)]
     public static extern void Initialize(string applicationId, ref EventHandlers handlers, bool autoRegister, string optionalSteamId);
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_Shutdown", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_Shutdown", CallingConvention = CallingConvention.Cdecl)]
     public static extern void Shutdown();
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_RunCallbacks", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_RunCallbacks", CallingConvention = CallingConvention.Cdecl)]
     public static extern void RunCallbacks();
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_UpdatePresence", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_UpdatePresence", CallingConvention = CallingConvention.Cdecl)]
     private static extern void UpdatePresenceNative(ref RichPresenceStruct presence);
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_ClearPresence", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_ClearPresence", CallingConvention = CallingConvention.Cdecl)]
     public static extern void ClearPresence();
 
-    [DllImport("discord-rpc", EntryPoint = "Discord_Respond", CallingConvention = CallingConvention.Cdecl)]
+    [DllImport(DLL_NAME, EntryPoint = "Discord_Respond", CallingConvention = CallingConvention.Cdecl)]
     public static extern void Respond(string userId, Reply reply);
 
     public static void UpdatePresence(RichPresence presence)

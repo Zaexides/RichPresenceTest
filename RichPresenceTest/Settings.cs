@@ -7,23 +7,62 @@ using static System.Text.Encoding;
 
 namespace RichPresenceTest
 {
-    public static class Settings
+    public class Settings
     {
+        [JsonIgnore]
+        private static Settings singleton;
+
         private const string SETTINGS_FILE = "/settings.user";
 
-        private static List<Application> applications = new List<Application>();
+        [JsonProperty] private List<Application> applications = new List<Application>();
+        [JsonProperty] private int lastSelectedApplication = -1;
+        [JsonProperty] private bool updateOnStartup = false;
 
-        public static int ApplicationCount => applications.Count;
+        [JsonIgnore]
+        public static Settings Main
+        {
+            get
+            {
+                if (singleton == null)
+                    singleton = new Settings();
+                return singleton;
+            }
+        }
 
-        public static Application GetApplication(int index) => applications[index];
+        [JsonIgnore]
+        public int LastSelectedApplication
+        {
+            get => lastSelectedApplication;
+            set
+            {
+                lastSelectedApplication = value;
+                Save();
+            }
+        }
 
-        public static void RemoveApplication(int index)
+        [JsonIgnore]
+        public bool UpdateOnStartup
+        {
+            get => updateOnStartup;
+            set
+            {
+                updateOnStartup = value;
+                Save();
+            }
+        }
+
+        [JsonIgnore]
+        public int ApplicationCount => applications.Count;
+
+        public Application GetApplication(int index) => applications[index];
+
+        public void RemoveApplication(int index)
         {
             applications.RemoveAt(index);
             Save();
         }
 
-        public static void RenameApplication(string appId, string newName)
+        public void RenameApplication(string appId, string newName)
         {
             foreach(Application app in applications)
             {
@@ -35,15 +74,15 @@ namespace RichPresenceTest
             }
         }
 
-        public static void AddApplication(Application application)
+        public void AddApplication(Application application)
         {
             applications.Add(application);
             Save();
         }
 
-        public static Application[] GetApplicationArray() => applications.ToArray();
+        public Application[] GetApplicationArray() => applications.ToArray();
 
-        public static bool ContainsApplicationWithName(string name)
+        public bool ContainsApplicationWithName(string name)
         {
             foreach(Application app in applications)
             {
@@ -53,7 +92,7 @@ namespace RichPresenceTest
             return false;
         }
 
-        public static bool ContainsApplicationWithID(string id)
+        public bool ContainsApplicationWithID(string id)
         {
             foreach(Application app in applications)
             {
@@ -65,7 +104,7 @@ namespace RichPresenceTest
 
         private static void Save()
         {
-            string json = JsonConvert.SerializeObject(applications);
+            string json = JsonConvert.SerializeObject(singleton);
 
             byte[] jsonBytes = UTF8.GetBytes(json);
             byte o = 0;
@@ -93,7 +132,7 @@ namespace RichPresenceTest
                 jsonBytes[i] = (byte)(jsonBytes[i] << (8 - o) | jsonBytes[i] >> o);
             }
             string json = UTF8.GetString(jsonBytes);
-            applications = JsonConvert.DeserializeObject<List<Application>>(json);
+            singleton = JsonConvert.DeserializeObject<Settings>(json);
         }
 
         public class Application
@@ -110,6 +149,12 @@ namespace RichPresenceTest
 
             [JsonProperty] private int smallIconIndex;
             [JsonProperty] private int largeIconIndex;
+
+            [JsonProperty] private bool useTime;
+            [JsonProperty] private bool isEndTime;
+
+            [JsonProperty] private bool useParty;
+            [JsonProperty] private int partySize = 1, partyMax = 1;
 
             [JsonIgnore]
             public string DetailsText
@@ -154,6 +199,42 @@ namespace RichPresenceTest
                     Settings.Save();
                 }
             }
+
+            [JsonIgnore]
+            public bool UseTime
+            {
+                get => useTime;
+                set
+                {
+                    useTime = value;
+                    Settings.Save();
+                }
+            }
+
+            [JsonIgnore]
+            public bool UseEndTime
+            {
+                get => isEndTime;
+                set
+                {
+                    isEndTime = value;
+                    Settings.Save();
+                }
+            }
+
+            [JsonIgnore]
+            public bool UseParty
+            {
+                get => useParty;
+                set
+                {
+                    useParty = value;
+                    Settings.Save();
+                }
+            }
+
+            public int PartySize { get => partySize; set => SetParty(value, PartyMax); }
+            public int PartyMax { get => partyMax; set => SetParty(PartySize, value); }
 
             public Application(string name, string appId)
             {
@@ -202,6 +283,13 @@ namespace RichPresenceTest
             public void SetLargeIconText(int index, string text)
             {
                 largeIconText[index] = text;
+                Settings.Save();
+            }
+
+            public void SetParty(int size, int max)
+            {
+                this.partySize = size;
+                this.partyMax = max;
                 Settings.Save();
             }
 
