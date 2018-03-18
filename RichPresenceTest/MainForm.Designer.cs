@@ -82,15 +82,16 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetTimestampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.automaticallyStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatePresenceOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetTimestampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.applicationBox.SuspendLayout();
             this.newAppGroup.SuspendLayout();
             this.curAppGroup.SuspendLayout();
@@ -672,7 +673,7 @@
             this.resetTimestampToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(166, 114);
+            this.contextMenu.Size = new System.Drawing.Size(166, 92);
             // 
             // showToolStripMenuItem
             // 
@@ -681,6 +682,20 @@
             this.showToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.showToolStripMenuItem.Text = "Show";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // updateToolStripMenuItem
+            // 
+            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.updateToolStripMenuItem.Text = "Update";
+            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            // 
+            // resetTimestampToolStripMenuItem
+            // 
+            this.resetTimestampToolStripMenuItem.Name = "resetTimestampToolStripMenuItem";
+            this.resetTimestampToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.resetTimestampToolStripMenuItem.Text = "Reset Timestamp";
+            this.resetTimestampToolStripMenuItem.Click += new System.EventHandler(this.resetTimestampToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -704,11 +719,21 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.automaticallyStartupToolStripMenuItem,
             this.updatePresenceOnStartupToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.testToolStripMenuItem.Text = "File";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
+            // 
+            // automaticallyStartupToolStripMenuItem
+            // 
+            this.automaticallyStartupToolStripMenuItem.CheckOnClick = true;
+            this.automaticallyStartupToolStripMenuItem.Name = "automaticallyStartupToolStripMenuItem";
+            this.automaticallyStartupToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.automaticallyStartupToolStripMenuItem.Text = "Automatically Startup";
+            this.automaticallyStartupToolStripMenuItem.Click += new System.EventHandler(this.automaticallyStartupToolStripMenuItem_Click);
             // 
             // updatePresenceOnStartupToolStripMenuItem
             // 
@@ -741,20 +766,6 @@
             this.updatesToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.updatesToolStripMenuItem.Text = "Updates";
             this.updatesToolStripMenuItem.Click += new System.EventHandler(this.updatesToolStripMenuItem_Click);
-            // 
-            // updateToolStripMenuItem
-            // 
-            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.updateToolStripMenuItem.Text = "Update";
-            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
-            // 
-            // resetTimestampToolStripMenuItem
-            // 
-            this.resetTimestampToolStripMenuItem.Name = "resetTimestampToolStripMenuItem";
-            this.resetTimestampToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.resetTimestampToolStripMenuItem.Text = "Reset Timestamp";
-            this.resetTimestampToolStripMenuItem.Click += new System.EventHandler(this.resetTimestampToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -867,5 +878,6 @@
         private System.Windows.Forms.ToolStripMenuItem updatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetTimestampToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem automaticallyStartupToolStripMenuItem;
     }
 }

@@ -46,14 +46,21 @@ public static class UpdateChecker
 
     public static void CheckForUpdates()
     {
-        WebRequest webRequest = WebRequest.Create(UPDATE_URL);
-        WebResponse webResponse = webRequest.GetResponse();
-        Stream webStream = webResponse.GetResponseStream();
-        string json = string.Empty;
-        using (StreamReader reader = new StreamReader(webStream))
-            json = reader.ReadToEnd();
+        try
+        {
+            WebRequest webRequest = WebRequest.Create(UPDATE_URL);
+            WebResponse webResponse = webRequest.GetResponse();
+            Stream webStream = webResponse.GetResponseStream();
+            string json = string.Empty;
+            using (StreamReader reader = new StreamReader(webStream))
+                json = reader.ReadToEnd();
 
-        updateData = JsonConvert.DeserializeObject<UpdateData>(json);
+            updateData = JsonConvert.DeserializeObject<UpdateData>(json);
+        }
+        catch
+        {
+            //Well that sucks.
+        }
     }
 
 

@@ -10,6 +10,7 @@ namespace RichPresenceTest
     {
         DiscordRpc.EventHandlers handlers;
         private readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1).AddHours(1); //???!!?!?!
+        private readonly bool autoStart = false;
 
         private Settings.Application CurrentApplication
         {
@@ -22,10 +23,11 @@ namespace RichPresenceTest
             }
         }
 
-        public MainForm()
+        public MainForm(bool fromAutoStartup)
         {
             UpdateChecker.CheckForUpdates();
             InitializeComponent();
+            autoStart = fromAutoStartup;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -369,6 +371,8 @@ namespace RichPresenceTest
         {
             if(!UpdateChecker.IsUpToDate)
                 updatesToolStripMenuItem_Click(sender, e);
+            else if(autoStart)
+                WindowState = FormWindowState.Minimized;
         }
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e) => updateButton_Click(sender, e);
@@ -377,6 +381,19 @@ namespace RichPresenceTest
         {
             currentDateTimeButton_Click(sender, e);
             updateButton_Click(sender, e);
+        }
+
+        private void automaticallyStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ShortcutProvider.ShortcutExists())
+                ShortcutProvider.CreateShortcut();
+            else
+                ShortcutProvider.DeleteShortcut();
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            automaticallyStartupToolStripMenuItem.Checked = ShortcutProvider.ShortcutExists();
         }
     }
 }
