@@ -36,6 +36,8 @@
             this.timeDifferenceCheckBox = new System.Windows.Forms.CheckBox();
             this.rememberTimeStampCheckBox = new System.Windows.Forms.CheckBox();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.minimizeInsteadOfCloseCheckBox = new System.Windows.Forms.CheckBox();
+            this.button = new System.Windows.Forms.Button();
             this.startupSettingsBox.SuspendLayout();
             this.timeSettingsBox.SuspendLayout();
             this.SuspendLayout();
@@ -44,14 +46,15 @@
             // 
             this.startupSettingsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.startupSettingsBox.Controls.Add(this.minimizeInsteadOfCloseCheckBox);
             this.startupSettingsBox.Controls.Add(this.autoUpdateCheckBox);
             this.startupSettingsBox.Controls.Add(this.autoStartCheckBox);
             this.startupSettingsBox.Location = new System.Drawing.Point(13, 13);
             this.startupSettingsBox.Name = "startupSettingsBox";
-            this.startupSettingsBox.Size = new System.Drawing.Size(445, 66);
+            this.startupSettingsBox.Size = new System.Drawing.Size(302, 90);
             this.startupSettingsBox.TabIndex = 0;
             this.startupSettingsBox.TabStop = false;
-            this.startupSettingsBox.Text = "Startup Settings";
+            this.startupSettingsBox.Text = "Application Settings";
             // 
             // autoUpdateCheckBox
             // 
@@ -79,11 +82,13 @@
             // 
             // timeSettingsBox
             // 
+            this.timeSettingsBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.timeSettingsBox.Controls.Add(this.timeDifferenceCheckBox);
             this.timeSettingsBox.Controls.Add(this.rememberTimeStampCheckBox);
-            this.timeSettingsBox.Location = new System.Drawing.Point(13, 86);
+            this.timeSettingsBox.Location = new System.Drawing.Point(13, 109);
             this.timeSettingsBox.Name = "timeSettingsBox";
-            this.timeSettingsBox.Size = new System.Drawing.Size(445, 64);
+            this.timeSettingsBox.Size = new System.Drawing.Size(302, 64);
             this.timeSettingsBox.TabIndex = 1;
             this.timeSettingsBox.TabStop = false;
             this.timeSettingsBox.Text = "Time Settings";
@@ -114,11 +119,34 @@
             this.rememberTimeStampCheckBox.UseVisualStyleBackColor = true;
             this.rememberTimeStampCheckBox.CheckedChanged += new System.EventHandler(this.rememberTimeStampCheckBox_CheckedChanged);
             // 
+            // minimizeInsteadOfCloseCheckBox
+            // 
+            this.minimizeInsteadOfCloseCheckBox.AutoSize = true;
+            this.minimizeInsteadOfCloseCheckBox.Location = new System.Drawing.Point(6, 66);
+            this.minimizeInsteadOfCloseCheckBox.Name = "minimizeInsteadOfCloseCheckBox";
+            this.minimizeInsteadOfCloseCheckBox.Size = new System.Drawing.Size(196, 17);
+            this.minimizeInsteadOfCloseCheckBox.TabIndex = 2;
+            this.minimizeInsteadOfCloseCheckBox.Text = "Minimize when pressing the x button";
+            this.minimizeInsteadOfCloseCheckBox.UseVisualStyleBackColor = true;
+            this.minimizeInsteadOfCloseCheckBox.CheckedChanged += new System.EventHandler(this.minimizeInsteadOfCloseCheckBox_CheckedChanged);
+            // 
+            // button
+            // 
+            this.button.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button.Location = new System.Drawing.Point(116, 188);
+            this.button.Name = "button";
+            this.button.Size = new System.Drawing.Size(94, 23);
+            this.button.TabIndex = 2;
+            this.button.Text = "OK";
+            this.button.UseVisualStyleBackColor = true;
+            this.button.Click += new System.EventHandler(this.button_Click);
+            // 
             // PreferencesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 232);
+            this.ClientSize = new System.Drawing.Size(327, 223);
+            this.Controls.Add(this.button);
             this.Controls.Add(this.timeSettingsBox);
             this.Controls.Add(this.startupSettingsBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -145,5 +173,7 @@
         private System.Windows.Forms.CheckBox rememberTimeStampCheckBox;
         private System.Windows.Forms.CheckBox timeDifferenceCheckBox;
         private System.Windows.Forms.ToolTip tooltip;
+        private System.Windows.Forms.CheckBox minimizeInsteadOfCloseCheckBox;
+        private System.Windows.Forms.Button button;
     }
 }

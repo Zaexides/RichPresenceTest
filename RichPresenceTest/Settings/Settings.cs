@@ -27,6 +27,8 @@ namespace RichPresenceTest
         [JsonProperty] private bool saveTimestamp = false;
         [JsonProperty] private bool saveDifference = false;
 
+        [JsonProperty] private bool minimizeInsteadOfClose = false;
+
         [JsonIgnore]
         public static Settings Main
         {
@@ -78,6 +80,17 @@ namespace RichPresenceTest
             set
             {
                 saveDifference = value;
+                Save();
+            }
+        }
+
+        [JsonIgnore]
+        public bool MinimizeInsteadOfClose
+        {
+            get => minimizeInsteadOfClose;
+            set
+            {
+                minimizeInsteadOfClose = value;
                 Save();
             }
         }

@@ -339,10 +339,7 @@ namespace RichPresenceTest
 
         private void notifyIcon_DoubleClick(object sender, EventArgs e) => showToolStripMenuItem_Click(sender, e);
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
         private void timeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -358,7 +355,7 @@ namespace RichPresenceTest
                 CurrentApplication.UseEndTime = endTimeRadioButton.Checked;
         }
 
-        private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => Close();
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => Application.Exit();
 
         private void updatesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -402,6 +399,15 @@ namespace RichPresenceTest
 
                 timeSetting.DateTime = dateTimePicker.Value;
                 CurrentApplication.TimeSetting = timeSetting;
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(Settings.Main.MinimizeInsteadOfClose && e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                WindowState = FormWindowState.Minimized;
             }
         }
     }

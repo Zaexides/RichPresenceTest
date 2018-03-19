@@ -24,6 +24,7 @@ namespace RichPresenceTest
             rememberTimeStampCheckBox.Checked = Settings.Main.SaveTimestamp;
             timeDifferenceCheckBox.Enabled = rememberTimeStampCheckBox.Checked;
             timeDifferenceCheckBox.Checked = Settings.Main.SaveDifference;
+            minimizeInsteadOfCloseCheckBox.Checked = Settings.Main.MinimizeInsteadOfClose;
         }
 
         private void autoStartCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -49,6 +50,13 @@ namespace RichPresenceTest
             Settings.Main.SaveDifference = timeDifferenceCheckBox.Checked;
             if (Application.OpenForms[0] is MainForm)
                 (Application.OpenForms[0] as MainForm).SaveTimestamp();
+        }
+
+        private void button_Click(object sender, EventArgs e) => Close();
+
+        private void minimizeInsteadOfCloseCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Main.MinimizeInsteadOfClose = minimizeInsteadOfCloseCheckBox.Checked;
         }
     }
 }
