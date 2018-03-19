@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Net;
+using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 
 public static class UpdateChecker
 {
-    public const string CURRENT_VERSION = "v1.1.0";
+    public const string CURRENT_VERSION = "v1.2.0";
     public const string DOWNLOAD_URL = @"https://github.com/Zaexides/RichPresenceTest/releases";
 
     private const string UPDATE_URL = "https://gist.githubusercontent.com/Zaexides/22349c662f199f3605cb6f86541de12e/raw/ce809993a8480098823e112c64d7ba86d7b6bebe/RichPresenceTest%2520Update%2520JSON";
@@ -22,7 +23,11 @@ public static class UpdateChecker
 #elif x86
             buildUpdates = updateData.x86;
 #endif
-            return buildUpdates.stable.Equals(CURRENT_VERSION);
+
+            ulong newVersion = GetVersionNumberFromVersionString(buildUpdates.stable);
+            ulong oldVersion = GetVersionNumberFromVersionString(CURRENT_VERSION);
+            
+            return oldVersion >= newVersion;
         }
     }
 
@@ -63,6 +68,18 @@ public static class UpdateChecker
         }
     }
 
+    private static ulong GetVersionNumberFromVersionString(string version)
+    {
+        string[] splitVersion = version.Split('.');
+        ulong versionNumber = 0;
+
+        for (int i = splitVersion.Length - 1, p = 0; i >= 0; i--, p += 10)
+        {
+            ulong numeric = ulong.Parse(new string(splitVersion[i].Where(c => char.IsDigit(c)).ToArray()));
+            versionNumber += numeric << p;
+        }
+        return versionNumber;
+    }
 
     public class UpdateData
     {
