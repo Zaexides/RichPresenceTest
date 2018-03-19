@@ -87,8 +87,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.automaticallyStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updatePresenceOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -637,6 +636,7 @@
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(314, 20);
             this.dateTimePicker.TabIndex = 1;
+            this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
             // updateButton
             // 
@@ -719,36 +719,24 @@
             // testToolStripMenuItem
             // 
             this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.automaticallyStartupToolStripMenuItem,
-            this.updatePresenceOnStartupToolStripMenuItem,
+            this.preferencesToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.testToolStripMenuItem.Name = "testToolStripMenuItem";
             this.testToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.testToolStripMenuItem.Text = "File";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
-            // automaticallyStartupToolStripMenuItem
+            // preferencesToolStripMenuItem
             // 
-            this.automaticallyStartupToolStripMenuItem.CheckOnClick = true;
-            this.automaticallyStartupToolStripMenuItem.Name = "automaticallyStartupToolStripMenuItem";
-            this.automaticallyStartupToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.automaticallyStartupToolStripMenuItem.Text = "Automatically Startup";
-            this.automaticallyStartupToolStripMenuItem.Click += new System.EventHandler(this.automaticallyStartupToolStripMenuItem_Click);
-            // 
-            // updatePresenceOnStartupToolStripMenuItem
-            // 
-            this.updatePresenceOnStartupToolStripMenuItem.CheckOnClick = true;
-            this.updatePresenceOnStartupToolStripMenuItem.Enabled = false;
-            this.updatePresenceOnStartupToolStripMenuItem.Name = "updatePresenceOnStartupToolStripMenuItem";
-            this.updatePresenceOnStartupToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.updatePresenceOnStartupToolStripMenuItem.Text = "Update Presence on startup";
-            this.updatePresenceOnStartupToolStripMenuItem.Click += new System.EventHandler(this.updatePresenceOnStartupToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.preferencesToolStripMenuItem.Text = "Settings";
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(219, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(134, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -872,12 +860,11 @@
         private System.Windows.Forms.RadioButton startTimeRadioButton;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem updatePresenceOnStartupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetTimestampToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem automaticallyStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;
     }
 }

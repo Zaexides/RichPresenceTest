@@ -9,7 +9,7 @@ namespace RichPresenceTest
     public partial class MainForm : Form
     {
         DiscordRpc.EventHandlers handlers;
-        private readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1).AddHours(1); //???!!?!?!
+        public static readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1).AddHours(1); //???!!?!?!
         private readonly bool autoStart = false;
 
         private Settings.Application CurrentApplication
@@ -39,7 +39,6 @@ namespace RichPresenceTest
             SetupApplicationList();
             if(lastSelectedApplication != -1 && lastSelectedApplication < appBox.Items.Count)
                 appBox.SelectedIndex = lastSelectedApplication;
-            updatePresenceOnStartupToolStripMenuItem.Checked = Settings.Main.UpdateOnStartup;
             handlers = new DiscordRpc.EventHandlers();
 
             if (Settings.Main.UpdateOnStartup)
@@ -115,7 +114,6 @@ namespace RichPresenceTest
             updateButton.Enabled = appBox.SelectedIndex != -1;
             timeCheckBox.Enabled = appBox.SelectedIndex != -1;
             partyCheckBox.Enabled = appBox.SelectedIndex != -1;
-            updatePresenceOnStartupToolStripMenuItem.Enabled = appBox.SelectedIndex != -1;
 
             if (appBox.SelectedIndex == -1)
             {
@@ -151,6 +149,9 @@ namespace RichPresenceTest
             partyCheckBox.Checked = CurrentApplication.UseParty;
             partySizeNumeric.Value = CurrentApplication.PartySize;
             partyMaxNumeric.Value = CurrentApplication.PartyMax;
+
+            if (Settings.Main.SaveTimestamp && CurrentApplication.TimeSetting != null)
+                dateTimePicker.Value = CurrentApplication.TimeSetting.DateTime;
         }
 
         private void addAppButton_Click(object sender, EventArgs e)
@@ -278,6 +279,9 @@ namespace RichPresenceTest
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            if (CurrentApplication == null)
+                return;
+
             DiscordRpc.Shutdown();
             DiscordRpc.Initialize(CurrentApplication.appId, ref handlers, false, string.Empty);
 
@@ -354,11 +358,6 @@ namespace RichPresenceTest
                 CurrentApplication.UseEndTime = endTimeRadioButton.Checked;
         }
 
-        private void updatePresenceOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Settings.Main.UpdateOnStartup = updatePresenceOnStartupToolStripMenuItem.Checked;
-        }
-
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e) => Close();
 
         private void updatesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -383,17 +382,27 @@ namespace RichPresenceTest
             updateButton_Click(sender, e);
         }
 
-        private void automaticallyStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!ShortcutProvider.ShortcutExists())
-                ShortcutProvider.CreateShortcut();
-            else
-                ShortcutProvider.DeleteShortcut();
+            PreferencesForm preferencesForm = new PreferencesForm();
+            preferencesForm.ShowDialog();
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        private void dateTimePicker_ValueChanged(object sender, EventArgs e) => SaveTimestamp();
+
+        public void SaveTimestamp()
         {
-            automaticallyStartupToolStripMenuItem.Checked = ShortcutProvider.ShortcutExists();
+            if (Settings.Main.SaveTimestamp && CurrentApplication != null)
+            {
+                ITimeSetting timeSetting;
+                if (Settings.Main.SaveDifference)
+                    timeSetting = new TimeDifference();
+                else
+                    timeSetting = new TimeStamp();
+
+                timeSetting.DateTime = dateTimePicker.Value;
+                CurrentApplication.TimeSetting = timeSetting;
+            }
         }
     }
 }

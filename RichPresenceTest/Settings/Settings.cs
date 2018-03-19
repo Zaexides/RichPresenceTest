@@ -12,11 +12,20 @@ namespace RichPresenceTest
         [JsonIgnore]
         private static Settings singleton;
 
+        [JsonIgnore]
+        private static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.Auto
+        };
+
         private const string SETTINGS_FILE = "/settings.user";
 
         [JsonProperty] private List<Application> applications = new List<Application>();
         [JsonProperty] private int lastSelectedApplication = -1;
         [JsonProperty] private bool updateOnStartup = false;
+        [JsonProperty] private bool saveTimestamp = false;
+        [JsonProperty] private bool saveDifference = false;
 
         [JsonIgnore]
         public static Settings Main
@@ -47,6 +56,28 @@ namespace RichPresenceTest
             set
             {
                 updateOnStartup = value;
+                Save();
+            }
+        }
+
+        [JsonIgnore]
+        public bool SaveTimestamp
+        {
+            get => saveTimestamp;
+            set
+            {
+                saveTimestamp = value;
+                Save();
+            }
+        }
+
+        [JsonIgnore]
+        public bool SaveDifference
+        {
+            get => saveDifference;
+            set
+            {
+                saveDifference = value;
                 Save();
             }
         }
@@ -104,7 +135,7 @@ namespace RichPresenceTest
 
         private static void Save()
         {
-            string json = JsonConvert.SerializeObject(singleton);
+            string json = JsonConvert.SerializeObject(singleton, jsonSerializerSettings);
 
             byte[] jsonBytes = UTF8.GetBytes(json);
             byte o = 0;
@@ -132,7 +163,7 @@ namespace RichPresenceTest
                 jsonBytes[i] = (byte)(jsonBytes[i] << (8 - o) | jsonBytes[i] >> o);
             }
             string json = UTF8.GetString(jsonBytes);
-            singleton = JsonConvert.DeserializeObject<Settings>(json);
+            singleton = JsonConvert.DeserializeObject<Settings>(json, jsonSerializerSettings);
         }
 
         public class Application
@@ -155,6 +186,19 @@ namespace RichPresenceTest
 
             [JsonProperty] private bool useParty;
             [JsonProperty] private int partySize = 1, partyMax = 1;
+
+            [JsonProperty] private ITimeSetting timeSetting;
+
+            [JsonIgnore]
+            public ITimeSetting TimeSetting
+            {
+                get => timeSetting;
+                set
+                {
+                    timeSetting = value;
+                    Settings.Save();
+                }
+            }
 
             [JsonIgnore]
             public string DetailsText
