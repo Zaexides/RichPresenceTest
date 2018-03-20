@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.startupSettingsBox = new System.Windows.Forms.GroupBox();
+            this.minimizeInsteadOfCloseCheckBox = new System.Windows.Forms.CheckBox();
             this.autoUpdateCheckBox = new System.Windows.Forms.CheckBox();
             this.autoStartCheckBox = new System.Windows.Forms.CheckBox();
             this.timeSettingsBox = new System.Windows.Forms.GroupBox();
             this.timeDifferenceCheckBox = new System.Windows.Forms.CheckBox();
             this.rememberTimeStampCheckBox = new System.Windows.Forms.CheckBox();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.minimizeInsteadOfCloseCheckBox = new System.Windows.Forms.CheckBox();
             this.button = new System.Windows.Forms.Button();
             this.startupSettingsBox.SuspendLayout();
             this.timeSettingsBox.SuspendLayout();
@@ -55,6 +55,17 @@
             this.startupSettingsBox.TabIndex = 0;
             this.startupSettingsBox.TabStop = false;
             this.startupSettingsBox.Text = "Application Settings";
+            // 
+            // minimizeInsteadOfCloseCheckBox
+            // 
+            this.minimizeInsteadOfCloseCheckBox.AutoSize = true;
+            this.minimizeInsteadOfCloseCheckBox.Location = new System.Drawing.Point(6, 66);
+            this.minimizeInsteadOfCloseCheckBox.Name = "minimizeInsteadOfCloseCheckBox";
+            this.minimizeInsteadOfCloseCheckBox.Size = new System.Drawing.Size(196, 17);
+            this.minimizeInsteadOfCloseCheckBox.TabIndex = 2;
+            this.minimizeInsteadOfCloseCheckBox.Text = "Minimize when pressing the x button";
+            this.minimizeInsteadOfCloseCheckBox.UseVisualStyleBackColor = true;
+            this.minimizeInsteadOfCloseCheckBox.CheckedChanged += new System.EventHandler(this.minimizeInsteadOfCloseCheckBox_CheckedChanged);
             // 
             // autoUpdateCheckBox
             // 
@@ -119,17 +130,6 @@
             this.rememberTimeStampCheckBox.UseVisualStyleBackColor = true;
             this.rememberTimeStampCheckBox.CheckedChanged += new System.EventHandler(this.rememberTimeStampCheckBox_CheckedChanged);
             // 
-            // minimizeInsteadOfCloseCheckBox
-            // 
-            this.minimizeInsteadOfCloseCheckBox.AutoSize = true;
-            this.minimizeInsteadOfCloseCheckBox.Location = new System.Drawing.Point(6, 66);
-            this.minimizeInsteadOfCloseCheckBox.Name = "minimizeInsteadOfCloseCheckBox";
-            this.minimizeInsteadOfCloseCheckBox.Size = new System.Drawing.Size(196, 17);
-            this.minimizeInsteadOfCloseCheckBox.TabIndex = 2;
-            this.minimizeInsteadOfCloseCheckBox.Text = "Minimize when pressing the x button";
-            this.minimizeInsteadOfCloseCheckBox.UseVisualStyleBackColor = true;
-            this.minimizeInsteadOfCloseCheckBox.CheckedChanged += new System.EventHandler(this.minimizeInsteadOfCloseCheckBox_CheckedChanged);
-            // 
             // button
             // 
             this.button.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -154,6 +154,7 @@
             this.MinimizeBox = false;
             this.Name = "PreferencesForm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PreferencesForm";
             this.Load += new System.EventHandler(this.PreferencesForm_Load);
             this.startupSettingsBox.ResumeLayout(false);
