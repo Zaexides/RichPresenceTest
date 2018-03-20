@@ -12,6 +12,7 @@ namespace RichPresenceTest
         DiscordRpc.EventHandlers handlers;
         public static readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1);
         private readonly bool autoStart = false;
+        private bool shownUpdateNotification = false;
 
         private Settings.Application CurrentApplication
         {
@@ -26,7 +27,6 @@ namespace RichPresenceTest
 
         public MainForm(bool fromAutoStartup)
         {
-            UpdateChecker.CheckForUpdates();
             InitializeComponent();
             autoStart = fromAutoStartup;
         }
@@ -45,6 +45,7 @@ namespace RichPresenceTest
             if (Settings.Main.UpdateOnStartup)
                 updateButton_Click(this, new EventArgs());
 
+            UpdateChecker.CheckForUpdates();
             if (!UpdateChecker.IsUpToDate)
             {
                 Font f = new Font(updatesToolStripMenuItem.Font, FontStyle.Bold);
@@ -366,9 +367,8 @@ namespace RichPresenceTest
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            if(!UpdateChecker.IsUpToDate)
-                updatesToolStripMenuItem_Click(sender, e);
-            else if(autoStart)
+            UpdateCheck();
+            if (UpdateChecker.IsUpToDate && autoStart)
                 WindowState = FormWindowState.Minimized;
         }
 
@@ -409,6 +409,25 @@ namespace RichPresenceTest
             {
                 e.Cancel = true;
                 WindowState = FormWindowState.Minimized;
+            }
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e) => UpdateCheck();
+
+        private void UpdateCheck()
+        {
+            UpdateChecker.CheckForUpdates();
+            if (!UpdateChecker.IsUpToDate && !shownUpdateNotification)
+            {
+                if (notifyIcon.Visible)
+                {
+                    notifyIcon.BalloonTipTitle = "An update is available.";
+                    notifyIcon.BalloonTipText = $"There's a new update for RichPresenceTest: {UpdateChecker.LatestStableVersion}";
+                    notifyIcon.ShowBalloonTip(10000);
+                }
+                else
+                    updatesToolStripMenuItem_Click(this, new EventArgs());
+                shownUpdateNotification = true;
             }
         }
     }
