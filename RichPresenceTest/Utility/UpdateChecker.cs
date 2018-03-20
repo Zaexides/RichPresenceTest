@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public static class UpdateChecker
 {
-    public const string CURRENT_VERSION = "v1.2.2";
+    public const string CURRENT_VERSION = "v1.2.3";
     public const string DOWNLOAD_URL = @"https://github.com/Zaexides/RichPresenceTest/releases";
 
     private const string UPDATE_URL = "https://zaexides.net/rpt/update.json";

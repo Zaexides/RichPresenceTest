@@ -18,7 +18,8 @@ namespace RichPresenceTest.Setting
         {
             foreach(Settings.Application app in settings.applications)
             {
-                app.TimeSetting.DateTime = app.TimeSetting.DateTime.AddHours(1);
+                if(app.TimeSetting != null)
+                    app.TimeSetting.DateTime = app.TimeSetting.DateTime.AddHours(1);
             }
         }
     }
