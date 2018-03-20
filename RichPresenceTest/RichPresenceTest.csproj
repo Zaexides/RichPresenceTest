@@ -106,6 +106,7 @@
     <Compile Include="PreferencesForm.Designer.cs">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings\SettingsUpdater.cs" />
     <Compile Include="Settings\TimeSetting.cs" />
     <Compile Include="Utility\DiscordRpc.cs" />
     <Compile Include="MainForm.cs">

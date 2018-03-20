@@ -68,7 +68,7 @@ public static class UpdateChecker
         }
     }
 
-    private static ulong GetVersionNumberFromVersionString(string version)
+    public static ulong GetVersionNumberFromVersionString(string version)
     {
         string[] splitVersion = version.Split('.');
         ulong versionNumber = 0;

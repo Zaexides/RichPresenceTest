@@ -5,7 +5,7 @@ using System.IO;
 
 using static System.Text.Encoding;
 
-namespace RichPresenceTest
+namespace RichPresenceTest.Setting
 {
     public class Settings
     {
@@ -21,13 +21,15 @@ namespace RichPresenceTest
 
         private const string SETTINGS_FILE = "/settings.user";
 
-        [JsonProperty] private List<Application> applications = new List<Application>();
+        [JsonProperty] internal List<Application> applications = new List<Application>();
         [JsonProperty] private int lastSelectedApplication = -1;
         [JsonProperty] private bool updateOnStartup = false;
         [JsonProperty] private bool saveTimestamp = false;
         [JsonProperty] private bool saveDifference = false;
 
         [JsonProperty] private bool minimizeInsteadOfClose = false;
+
+        [JsonProperty] public ulong versionNumber;
 
         [JsonIgnore]
         public static Settings Main
@@ -148,6 +150,8 @@ namespace RichPresenceTest
 
         private static void Save()
         {
+            singleton.versionNumber = UpdateChecker.GetVersionNumberFromVersionString(UpdateChecker.CURRENT_VERSION);
+
             string json = JsonConvert.SerializeObject(singleton, jsonSerializerSettings);
 
             byte[] jsonBytes = UTF8.GetBytes(json);
@@ -177,6 +181,7 @@ namespace RichPresenceTest
             }
             string json = UTF8.GetString(jsonBytes);
             singleton = JsonConvert.DeserializeObject<Settings>(json, jsonSerializerSettings);
+            SettingsUpdater.UpdateSettings(singleton.versionNumber);
         }
 
         public class Application
@@ -290,7 +295,9 @@ namespace RichPresenceTest
                 }
             }
 
+            [JsonIgnore]
             public int PartySize { get => partySize; set => SetParty(value, PartyMax); }
+            [JsonIgnore]
             public int PartyMax { get => partyMax; set => SetParty(PartySize, value); }
 
             public Application(string name, string appId)

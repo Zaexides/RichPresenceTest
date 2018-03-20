@@ -3,13 +3,14 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using RichPresenceTest.Setting;
 
 namespace RichPresenceTest
 {
     public partial class MainForm : Form
     {
         DiscordRpc.EventHandlers handlers;
-        public static readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1).AddHours(1); //???!!?!?!
+        public static readonly DateTime unixDateTimeStart = new DateTime(1970, 1, 1);
         private readonly bool autoStart = false;
 
         private Settings.Application CurrentApplication
@@ -309,9 +310,9 @@ namespace RichPresenceTest
             if (timeCheckBox.Checked)
             {
                 if (startTimeRadioButton.Checked)
-                    richPresence.startTimestamp = (long)dateTimePicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
+                    richPresence.startTimestamp = (long)dateTimePicker.Value.ToUniversalTime().Subtract(unixDateTimeStart).TotalSeconds;
                 else if (endTimeRadioButton.Checked)
-                    richPresence.endTimestamp = (long)dateTimePicker.Value.Subtract(unixDateTimeStart).TotalSeconds;
+                    richPresence.endTimestamp = (long)dateTimePicker.Value.ToUniversalTime().Subtract(unixDateTimeStart).TotalSeconds;
             }
 
             DiscordRpc.UpdatePresence(richPresence);
