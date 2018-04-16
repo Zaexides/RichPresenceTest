@@ -38,6 +38,7 @@
             this.linkLabel = new System.Windows.Forms.LinkLabel();
             this.updateAvailableLabel = new System.Windows.Forms.Label();
             this.button = new System.Windows.Forms.Button();
+            this.changelog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -97,7 +98,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 112);
+            this.label4.Location = new System.Drawing.Point(7, 255);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(194, 13);
             this.label4.TabIndex = 6;
@@ -106,7 +107,7 @@
             // linkLabel
             // 
             this.linkLabel.AutoSize = true;
-            this.linkLabel.Location = new System.Drawing.Point(212, 112);
+            this.linkLabel.Location = new System.Drawing.Point(207, 255);
             this.linkLabel.Name = "linkLabel";
             this.linkLabel.Size = new System.Drawing.Size(40, 13);
             this.linkLabel.TabIndex = 7;
@@ -129,7 +130,7 @@
             // 
             // button
             // 
-            this.button.Location = new System.Drawing.Point(142, 133);
+            this.button.Location = new System.Drawing.Point(137, 276);
             this.button.Name = "button";
             this.button.Size = new System.Drawing.Size(93, 23);
             this.button.TabIndex = 9;
@@ -137,11 +138,22 @@
             this.button.UseVisualStyleBackColor = true;
             this.button.Click += new System.EventHandler(this.button_Click);
             // 
+            // changelog
+            // 
+            this.changelog.Location = new System.Drawing.Point(12, 98);
+            this.changelog.Multiline = true;
+            this.changelog.Name = "changelog";
+            this.changelog.ReadOnly = true;
+            this.changelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.changelog.Size = new System.Drawing.Size(355, 154);
+            this.changelog.TabIndex = 10;
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 163);
+            this.ClientSize = new System.Drawing.Size(379, 311);
+            this.Controls.Add(this.changelog);
             this.Controls.Add(this.button);
             this.Controls.Add(this.updateAvailableLabel);
             this.Controls.Add(this.linkLabel);
@@ -178,5 +190,6 @@
         private System.Windows.Forms.LinkLabel linkLabel;
         private System.Windows.Forms.Label updateAvailableLabel;
         private System.Windows.Forms.Button button;
+        private System.Windows.Forms.TextBox changelog;
     }
 }

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public static class UpdateChecker
 {
-    public const string CURRENT_VERSION = "v1.2.3";
+    public const string CURRENT_VERSION = "v1.3.0";
     public const string DOWNLOAD_URL = @"https://github.com/Zaexides/RichPresenceTest/releases";
 
     private const string UPDATE_URL = "https://zaexides.net/rpt/update.json";
@@ -18,6 +18,9 @@ public static class UpdateChecker
         get
         {
             UpdateData.BuildUpdates buildUpdates;
+            if (updateData == null)
+                return true;
+
 #if x64
             buildUpdates = updateData.x64;
 #elif x86
@@ -29,6 +32,11 @@ public static class UpdateChecker
             
             return oldVersion >= newVersion;
         }
+    }
+
+    public static bool IsConnected
+    {
+        get => updateData != null;
     }
 
     public static string LatestVersion
@@ -46,6 +54,15 @@ public static class UpdateChecker
         get => updateData.x64.stable;
 #elif x86
         get => updateData.x86.stable;
+#endif
+    }
+
+    public static UpdateData.Changelog[] Changelogs
+    {
+#if x64
+        get => updateData.x64.changelog;
+#elif x86
+        get => updateData.x86.changelog;
 #endif
     }
 
@@ -89,6 +106,14 @@ public static class UpdateChecker
         {
             public string stable;
             public string latest;
+
+            public Changelog[] changelog;
+        }
+
+        public class Changelog
+        {
+            public string version;
+            public string[] changes;
         }
     }
 }
