@@ -93,13 +93,25 @@ namespace RichPresenceTest
 
         private void SetupApplicationList()
         {
+            Settings.Application[] appArray = Settings.Main.GetApplicationArray();
+
             appBox.Items.Clear();
-            appBox.Items.AddRange(Settings.Main.GetApplicationArray());
+            appBox.Items.AddRange(appArray);
             if (appBox.Items.Count > 0)
                 appBox.SelectedIndex = 0;
             else
                 appBox.SelectedIndex = -1;
             appBox_SelectedIndexChanged(null, null);
+
+            switchToolStripMenuItem.DropDownItems.Clear();
+            int i = 0;
+            foreach(Settings.Application app in appArray)
+            {
+                i++;
+                switchToolStripMenuItem.DropDownItems.Add(i + "-" + app.name);
+            }
+
+            switchToolStripMenuItem.Enabled = switchToolStripMenuItem.DropDownItems.Count > 0;
         }
 
         private void appIdTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -429,6 +441,15 @@ namespace RichPresenceTest
                     updatesToolStripMenuItem_Click(this, new EventArgs());
                 shownUpdateNotification = true;
             }
+        }
+
+        private void switchToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string text = e.ClickedItem.Text;
+            int id = int.Parse(text.Split('-')[0].Replace(" ", string.Empty));
+            appBox.SelectedIndex = id - 1;
+            appBox_SelectedIndexChanged(null, null);
+            updateButton_Click(null, null);
         }
     }
 }
